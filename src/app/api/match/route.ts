@@ -29,7 +29,7 @@ import type {
 } from "@/lib/types";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 // Cap how many opportunities Claude ranks per request (keeps the JSON from
 // hitting the token limit and truncating).

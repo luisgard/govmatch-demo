@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "GovMatch Autofill",
+  "version": "1.7.0",
+  "description": "A step-by-step guide through the whole federal process — from creating your Login.gov account to a submitted Grants.gov application. Tracks your progress, shows where you are, identifies the real fields on each page (flagging sensitive ones), fills non-sensitive fields, and guides the rest. It never submits or signs — you review and sign.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://*.grants.gov/*",
+    "https://*.sam.gov/*",
+    "https://secure.login.gov/*",
+    "https://*.login.gov/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "GovMatch Autofill",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.grants.gov/*",
+        "https://*.sam.gov/*",
+        "https://secure.login.gov/*",
+        "https://*.login.gov/*"
+      ],
+      "js": ["fieldMap.js", "stepGuide.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

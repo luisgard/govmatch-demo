@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GovMatch Autofill</title>
+    <style>
+      :root {
+        --brand: #1f47f5;
+        --brand-dark: #1836e1;
+        --ink: #0f1729;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --bg: #f8fafc;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        width: 380px;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: #fff;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand { display: flex; align-items: center; gap: 8px; }
+      .logo {
+        width: 28px; height: 28px; border-radius: 8px;
+        background: var(--brand); color: #fff; font-weight: 800;
+        display: grid; place-items: center; font-size: 15px;
+      }
+      .brand b { font-size: 15px; }
+      .brand small { display: block; color: var(--muted); font-size: 11px; }
+      .lang {
+        display: inline-flex; border: 1px solid var(--line);
+        border-radius: 8px; overflow: hidden;
+      }
+      .lang button {
+        border: 0; background: #fff; color: var(--muted);
+        font-weight: 700; font-size: 12px; padding: 5px 9px; cursor: pointer;
+      }
+      .lang button.active { background: var(--brand); color: #fff; }
+
+      main { padding: 14px; }
+      .safety {
+        background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+        font-size: 12px; line-height: 1.4; border-radius: 10px;
+        padding: 9px 11px; margin-bottom: 14px;
+      }
+      h2 { font-size: 13px; margin: 0 0 6px; }
+      .hint { font-size: 12px; color: var(--muted); margin: 0 0 8px; }
+      textarea {
+        width: 100%; min-height: 90px; resize: vertical;
+        border: 1px solid var(--line); border-radius: 10px; padding: 9px;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px;
+      }
+      .row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+      button.primary, button.secondary, button.ghost {
+        border-radius: 9px; font-weight: 600; font-size: 13px; cursor: pointer;
+        padding: 9px 12px; border: 1px solid transparent;
+      }
+      button.primary { background: var(--brand); color: #fff; }
+      button.primary:hover { background: var(--brand-dark); }
+      button.primary:disabled { opacity: .5; cursor: not-allowed; }
+      button.secondary { background: #fff; color: var(--ink); border-color: var(--line); }
+      button.ghost { background: transparent; color: var(--muted); border: 0; padding: 6px 8px; }
+
+      .status {
+        font-size: 12px; margin-top: 8px; padding: 8px 10px; border-radius: 8px;
+      }
+      .status.ok { background: #dcfce7; color: #166534; }
+      .status.err { background: #fee2e2; color: #991b1b; }
+      .status.info { background: #eff6ff; color: #1e40af; }
+
+      hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+
+      .report { margin-top: 12px; }
+      .report h3 {
+        font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+        color: var(--muted); margin: 12px 0 6px;
+      }
+      ul { list-style: none; margin: 0; padding: 0; }
+      li {
+        font-size: 12px; line-height: 1.4; padding: 6px 8px; border-radius: 8px;
+        margin-bottom: 5px; display: flex; gap: 7px; align-items: flex-start;
+      }
+      li.green { background: #dcfce7; color: #166534; }
+      li.yellow { background: #fef9c3; color: #854d0e; }
+      li.blue { background: #dbeafe; color: #1e40af; }
+      .badge-sens {
+        font-size: 10px; font-weight: 700; background: #fecaca; color: #991b1b;
+        border-radius: 5px; padding: 1px 5px; margin-left: 4px;
+      }
+      footer { padding: 0 14px 14px; }
+      .disclaimer { font-size: 11px; color: var(--muted); line-height: 1.4; }
+      .hidden { display: none; }
+
+      .where {
+        background: #f1f5f9; border: 1px solid var(--line);
+        border-radius: 10px; padding: 10px 12px; margin-bottom: 14px;
+      }
+      .where h2 { font-size: 12px; color: var(--brand); margin: 0 0 4px; }
+      .where .where-where { font-size: 12px; font-weight: 600; margin: 0 0 6px; line-height: 1.4; }
+      .where ul li { font-size: 12px; padding: 2px 0; background: none; color: var(--ink); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="logo">G</div>
+        <div>
+          <b data-i18n="title">GovMatch Autofill</b>
+          <small data-i18n="subtitle">Fill non-sensitive fields · guide the rest</small>
+        </div>
+      </div>
+      <div class="lang">
+        <button id="lang-en" class="active">EN</button>
+        <button id="lang-es">ES</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="safety" id="safety"></div>
+
+      <div id="where-box" class="where hidden">
+        <h2 id="where-title"></h2>
+        <p class="where-where" id="where-where"></p>
+        <ul id="where-next"></ul>
+      </div>
+
+      <h2 data-i18n="dataHeading">1 · Paste your data</h2>
+      <p class="hint" id="data-hint"></p>
+      <textarea id="data-input" spellcheck="false"></textarea>
+      <div class="row">
+        <button class="primary" id="save-btn"></button>
+        <button class="secondary" id="clear-data-btn"></button>
+      </div>
+      <div id="data-status" class="status info hidden"></div>
+
+      <hr />
+
+      <h2 data-i18n="fillHeading">2 · Autofill the open form</h2>
+      <p class="hint" id="fill-hint"></p>
+      <div class="row">
+        <button class="primary" id="autofill-btn"></button>
+        <button class="secondary" id="clear-hl-btn"></button>
+      </div>
+      <div id="fill-status" class="status info hidden"></div>
+
+      <div class="report hidden" id="report"></div>
+    </main>
+
+    <footer>
+      <p class="disclaimer" id="disclaimer"></p>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

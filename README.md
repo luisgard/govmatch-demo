@@ -15,6 +15,51 @@ Build/run the web app first; the extension consumes data the web app produces.
 
 ---
 
+## Live demo
+
+**Try it:** <https://govmatch-demo-lime.vercel.app/>
+
+No setup, no login — open the link and describe a startup (or pick one of the 5
+built-in examples). GovMatch queries live Grants.gov data and returns ranked,
+explained opportunities in seconds.
+
+### Suggested demo path (2 minutes)
+
+1. **A strong match** — pick the **AI health startup** example (or type your own).
+   You'll see NIH SBIR/STTR come up as *"Eligible to lead · High strategic fit"* —
+   the natural route — while academic research mechanisms (R01, RM1) are correctly
+   shown as *"Low strategic fit"* with a plain-language reason. Every card explains
+   **why it matches, why it may not, and what to verify.**
+
+2. **The honest "no match"** — now try the **kids' activities marketplace**
+   example. Watch GovMatch resist the temptation to invent a match: everything
+   comes back *"Low strategic fit"*, and the summary says plainly that federal R&D
+   grants aren't the right path — *"your primary funding path is more likely
+   venture, angel, or revenue-based financing."* Most AI tools hallucinate an
+   answer here; GovMatch tells the truth.
+
+3. **The application wizard** — open any opportunity → *"Start application."*
+   GovMatch builds a step-by-step plan from that specific opportunity's official
+   listing, with **two clocks per step** (your hands-on time vs. the government's
+   wait), drafts you can edit, and an honest boundary: it prepares everything and
+   takes you to the door, but **you review, sign, and submit yourself** — because
+   that final step is a legal signature no tool should automate.
+
+### What makes it real
+
+- Opportunities come from the **live Grants.gov API** — nothing is invented.
+- **Code determines eligibility, amounts, and dates; Claude only explains them** —
+  so the tool can't hallucinate a grant or a number into existence.
+- It's **honest about limits**: discovery covers what agencies publish on
+  Grants.gov (strongest for domains like health). Funding on agency-run portals
+  (DoD, NASA, EPA) or annual cycles (USDA) is roadmap, not silently missing.
+
+> **Note:** the demo makes live calls to Claude and public government APIs, so a
+> search takes a few seconds. It's an AI-assisted analysis, not an official
+> eligibility determination — always verify with the relevant agency.
+
+---
+
 ## Core design principle
 
 > **Claude EXPLAINS; official sources DETERMINE.**
